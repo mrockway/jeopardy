@@ -1,0 +1,66 @@
+<h1>Create a new game</h1>
+
+<!-- no code -->
+<form id="newGameForm">
+  {{!-- Start Game Name Section --}}
+  <div class="row">
+    <div class="col mb-3">
+      <div class="input-group">
+        <span for="gameName" class="bg-primary-subtle border border-primary-subtle input-group-text">Game Name</span>
+        <input type="text" class="form-control" id="gameName" name="gameName" required />
+      </div>
+    </div>
+  </div>
+  {{!-- End Game Name Section --}}
+  {{!-- Start Category Section --}}
+  <div class="accordion" id="categoryAccordian">
+    {{#times 25}}
+    {{#if @displayCategory}}
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{@categoryNum}}" aria-expanded="true" aria-controls="collapse{{@categoryNum}}">
+          Category #{{@categoryNum}}
+        </button>
+      </h2>
+      <div id="collapse{{@categoryNum}}" class="accordion-collapse collapse show" data-bs-parent="#categoryAccordian">
+        <div class="accordion-body">
+          <div class="col-12 mb-3">
+            <div class="input-group">
+              <span for="category{{@categoryNum}}Name" class="bg-primary-subtle border border-primary-subtle input-group-text">Category {{@categoryNum}} Name</span>
+              <input type="text" class="form-control" id="category{{@categoryNum}}Name" name="category{{@categoryNum}}Name" required />
+            </div>
+          </div>
+          {{/if}}
+          {{!-- Start Clue Section --}}
+          <div class="row">
+            <div class="col mb-3">
+              <div class="input-group">
+                <span for="clueQuestion{{@clueNum}}Name" class="bg-primary-subtle border border-primary-subtle input-group-text">Clue Question {{@clueNum}} Name</span>
+                <input type="text" class="form-control" id="clueQuestion{{@clueNum}}Name" name="clueQuestion{{@clueNum}}Name" required />
+              </div>
+            </div>
+            <div class="col mb-3">
+              <div class="input-group">
+                <span for="clueAnswer{{@clueNum}}Name" class="bg-primary-subtle border border-primary-subtle input-group-text">Clue Answer {{@clueNum}} Name</span>
+                <input type="text" class="form-control" id="clueAnswer{{@clueNum}}Name" name="clueAnswer{{@clueNum}}Name" required />
+              </div>
+            </div>
+            <div class="col mb-3">
+              <div class="input-group">
+                <span for="clue{{@clueNum}}Value" class="bg-primary-subtle border border-primary-subtle input-group-text">Clue {{@clueNum}} Value</span>
+                <input type="number" class="form-control" id="clue{{@clueNum}}Value" name="clue{{@clueNum}}Value" value="{{@clueVal}}" required />
+              </div>
+            </div>
+          </div> <!-- End Clue Row -->
+          {{!-- End Clue Section --}}
+          {{#if @endDisplayCategory}}
+        </div> <!-- End Accoridan Body -->
+      </div> <!-- End Accoridan Collapse -->
+    </div> <!-- End Accoridan Item -->
+      {{/if}}
+    {{/times}}
+  </div> <!-- End Accoridan -->
+  {{!-- End Category Section --}}
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<script language="javascript" src="/javascripts/game.js"></script>

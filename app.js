@@ -4,7 +4,25 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var hbs = require('hbs');
+hbs.registerHelper('times', function(n, block) {
+  var accum = '';
+  for(var i = 0; i < n; ++i) {
+    block.data.clueNum = (i % 5) + 1;
+    block.data.clueVal = ((i % 5) + 1)*100;
+    block.data.categoryNum = Math.floor(i / 5) + 1;
+    block.data.displayCategory = (i % 5 === 0)
+    block.data.endDisplayCategory = (i % 5 === 4)
+    accum += block.fn(this);
+  }
+  return accum;
+});
+
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/jeopardy');
+
 var indexRouter = require('./routes/index');
+var gameRouter = require('./routes/game');
 
 var app = express();
 
@@ -17,10 +35,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
+app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/games/', gameRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
