@@ -8,7 +8,15 @@ var categorySchema = new Schema(
     clues: [{ type: Schema.Types.ObjectId, ref: 'Clue'}]
   },
   {
-    timestamps: true
+    timestamps: true,
+    methods: {
+      async populateRecord(){
+        return (await this.populate('game')).populate('clues');
+      },
+      toJSON() {
+        return this.toObject()
+      }
+    }
   }
 );
 

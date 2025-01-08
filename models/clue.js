@@ -11,7 +11,13 @@ var clueSchema = new Schema(
     dailyDouble: {type: Boolean, default: false, required: true}
   },
   {
-    timestamps: true
+    timestamps: true,
+    async populateRecord(){
+      return await this.populate('game').populate('category');
+    },
+    toJSON() {
+      return this.toObject()
+    }
   }
 );
 

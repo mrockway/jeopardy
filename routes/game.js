@@ -3,13 +3,13 @@ const router = express.Router();
 const {Game, Clue, Category} = require('../models/index.js')
 
 router.get('/new', function(req, res, next) {
-  res.render('newGame', { title: 'Jeopardy!', renderTime: new Date() });
+  res.render('createGame', { title: 'Jeopardy!', renderTime: new Date() });
 });
 
 
 router.get('/show', function(req, res, next) {
   let games = Game.find()
-  res.render('newGame', { title: 'Jeopardy!', renderTime: new Date() });
+  res.render('newGame', { games: games, title: 'Jeopardy!', renderTime: new Date() });
 });
 
 

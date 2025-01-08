@@ -7,7 +7,21 @@ var gameSchema = new Schema(
     categories: [{ type: Schema.Types.ObjectId, ref: 'Category'}]
   },
   {
-    timestamps: true
+    timestamps: true,
+    methods: {
+      async populateRecord(){
+        // return await this.populate('categories');
+        return await this.populate({
+          path: 'categories',
+          populate: {
+            path: 'clues'
+          }
+        });
+      },
+      toJSON() {
+        return this.toObject()
+      }
+    }
   }
 );
 
