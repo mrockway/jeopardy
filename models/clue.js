@@ -8,7 +8,8 @@ var clueSchema = new Schema(
     question: { type: String, required: true },
     answer: {type: String, required: true},
     value: {type: Number, required: true, enum: [100, 200, 300, 400, 500]},
-    dailyDouble: {type: Boolean, default: false, required: true}
+    dailyDouble: {type: Boolean, default: false, required: true},
+    revealed: {type: Boolean, default: false, required: true}
   },
   {
     timestamps: true,

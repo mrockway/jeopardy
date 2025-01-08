@@ -4,13 +4,13 @@ var Schema = mongoose.Schema;
 var gameSchema = new Schema(
   {
     name: { type: String, required: true },
-    categories: [{ type: Schema.Types.ObjectId, ref: 'Category'}]
+    categories: [{ type: Schema.Types.ObjectId, ref: 'Category'}],
+    players: [{type: Schema.Types.Array}]
   },
   {
     timestamps: true,
     methods: {
       async populateRecord(){
-        // return await this.populate('categories');
         return await this.populate({
           path: 'categories',
           populate: {

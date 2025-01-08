@@ -1,0 +1,15 @@
+{{#each games}}
+ <h3>Game Name: <a href="/games/play?id={{this.id}}">{{this.name}}</a></h3>
+ <hr>
+ <h3>Game Categories:</h3>
+ {{#each this.categories}}
+   <h4>Category Name: {{this.name}}</h4>
+  {{#each this.clues}}
+    <h4>Question: {{this.question}}</h4>
+    <h4>Answer: {{this.answer}}</h4>
+    <h4>Value: {{this.value}}</h4>
+  {{/each}}
+    <hr>
+ {{/each}}
+ <br><br><br><br>
+{{/each}}

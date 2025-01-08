@@ -3,11 +3,22 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
 var hbs = require('hbs');
+
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/jeopardy');
+
+// Router setup
+var indexRouter = require('./routes/index');
+var gameRouter = require('./routes/game');
+
+var app = express();
+
+// view engine setup
 hbs.registerHelper('times', function(n, block) {
   var accum = '';
   for(var i = 0; i < n; ++i) {
+    block.data.position = i + 1;
     block.data.clueNum = (i % 5) + 1;
     block.data.clueVal = ((i % 5) + 1)*100;
     block.data.categoryNum = Math.floor(i / 5) + 1;
@@ -17,16 +28,7 @@ hbs.registerHelper('times', function(n, block) {
   }
   return accum;
 });
-
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/jeopardy');
-
-var indexRouter = require('./routes/index');
-var gameRouter = require('./routes/game');
-
-var app = express();
-
-// view engine setup
+hbs.registerPartials(__dirname + '/views/partials');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
