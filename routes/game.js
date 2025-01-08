@@ -7,7 +7,7 @@ var path = require('path');
 
 router.get('/new', function(req, res, next) {
   let htmlString = fs.readFileSync(path.join(__dirname, '../views/partials/addNewPlayer.hbs'), 'utf8');
-  res.render('createGame', { title: 'Jeopardy!', renderTime: formattedDate(), addNewPlayerHTML: htmlString});
+  res.render('games/createGame', { title: 'Jeopardy!', renderTime: formattedDate(), addNewPlayerHTML: htmlString});
 });
 
 
@@ -19,7 +19,7 @@ router.get('/show', async function(req, res, next) {
       path: 'clues'
     }
   });
-  res.render('showGames', { games: games, title: 'Jeopardy!', renderTime: formattedDate()});
+  res.render('games/showGames', { games: games, title: 'Jeopardy!', renderTime: formattedDate()});
 });
 
 router.get('/play', async function(req, res, next) {
@@ -30,7 +30,7 @@ router.get('/play', async function(req, res, next) {
       path: 'clues'
     }
   });
-  res.render('playGame', { game: game, title: 'Jeopardy!', renderTime: formattedDate()});
+  res.render('games/playGame', { game: game, title: 'Jeopardy!', renderTime: formattedDate()});
 });
 
 

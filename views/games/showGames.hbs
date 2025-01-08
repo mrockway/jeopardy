@@ -1,0 +1,17 @@
+<div class="row">
+  {{#each games}}
+  <div class="col-3 g-2">
+    <div class="card">
+      <div class="card-body">
+        <div>Game Name: {{this.name}}</div>
+      </div>
+        <a href="/games/play?id={{this.id}}" class="href link-underline link-underline-opacity-0">
+      <div class="card-footer d-grid gap-2">
+          <button class="getGame btn bg-primary-subtle">Play</button>
+      </div>
+        </a>
+    </div>
+  </div>
+  {{/each}}
+</div>
+<script language="javascript" src="/javascripts/showGame.js"></script>
