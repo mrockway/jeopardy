@@ -1,4 +1,4 @@
-<h1>Create a new game</h1>
+<h1>Create a new Jeopardy game</h1>
 
 <!-- no code -->
 <form id="newGameForm">
@@ -7,7 +7,7 @@
     <div class="col mb-3">
       <div class="input-group">
         <span for="gameName" class="bg-primary-subtle border border-primary-subtle input-group-text">Game Name</span>
-        <input type="text" class="form-control" id="gameName" name="gameName" required />
+        <input type="text" class="form-control" id="gameName" name="gameName" required value="DEMO"/>
       </div>
     </div>
   </div>
@@ -18,16 +18,16 @@
     {{#if @displayCategory}}
     <div class="accordion-item">
       <h2 class="accordion-header">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{@categoryNum}}" aria-expanded="true" aria-controls="collapse{{@categoryNum}}">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{@categoryNum}}" aria-expanded="false" aria-controls="collapse{{@categoryNum}}">
           Category #{{@categoryNum}}
         </button>
       </h2>
-      <div id="collapse{{@categoryNum}}" class="accordion-collapse collapse show" data-bs-parent="#categoryAccordian">
+      <div id="collapse{{@categoryNum}}" class="accordion-collapse collapse" data-bs-parent="#categoryAccordian">
         <div class="accordion-body">
           <div class="col-12 mb-3">
             <div class="input-group">
               <span for="category{{@categoryNum}}Name" class="bg-primary-subtle border border-primary-subtle input-group-text">Category {{@categoryNum}} Name</span>
-              <input type="text" class="form-control" id="category{{@categoryNum}}Name" name="category{{@categoryNum}}Name" required />
+              <input type="text" class="form-control" id="category{{@categoryNum}}Name" name="category{{@categoryNum}}Name" required value="DEMOCAT"/>
             </div>
           </div>
           {{/if}}
@@ -35,20 +35,20 @@
           <div class="row">
             <div class="col mb-3">
               <div class="input-group">
-                <span for="clueQuestion{{@clueNum}}Name" class="bg-primary-subtle border border-primary-subtle input-group-text">Clue Question {{@clueNum}} Name</span>
-                <input type="text" class="form-control" id="clueQuestion{{@clueNum}}Name" name="clueQuestion{{@clueNum}}Name" required />
+                <span for="cat{{@categoryNum}}clueQ{{@clueNum}}" class="bg-primary-subtle border border-primary-subtle input-group-text">Clue Question {{@clueNum}} Name</span>
+                <input type="text" class="form-control" id="cat{{@categoryNum}}clueQ{{@clueNum}}" name="cat{{@categoryNum}}clueQ{{@clueNum}}" required value="DEMOCQ"/>
               </div>
             </div>
             <div class="col mb-3">
               <div class="input-group">
-                <span for="clueAnswer{{@clueNum}}Name" class="bg-primary-subtle border border-primary-subtle input-group-text">Clue Answer {{@clueNum}} Name</span>
-                <input type="text" class="form-control" id="clueAnswer{{@clueNum}}Name" name="clueAnswer{{@clueNum}}Name" required />
+                <span for="cat{{@categoryNum}}clueA{{@clueNum}}" class="bg-primary-subtle border border-primary-subtle input-group-text">Clue Answer {{@clueNum}} Name</span>
+                <input type="text" class="form-control" id="cat{{@categoryNum}}clueA{{@clueNum}}" name="cat{{@categoryNum}}clueA{{@clueNum}}" required value="DEMOCA"/>
               </div>
             </div>
-            <div class="col mb-3">
+            <div class="col-2 mb-3">
               <div class="input-group">
-                <span for="clue{{@clueNum}}Value" class="bg-primary-subtle border border-primary-subtle input-group-text">Clue {{@clueNum}} Value</span>
-                <input type="number" class="form-control" id="clue{{@clueNum}}Value" name="clue{{@clueNum}}Value" value="{{@clueVal}}" required />
+                <span for="cat{{@categoryNum}}clueV{{@clueNum}}" class="bg-primary-subtle border border-primary-subtle input-group-text">Clue {{@clueNum}} Value</span>
+                <input type="number" class="form-control" id="cat{{@categoryNum}}clueV{{@clueNum}}" name="cat{{@categoryNum}}clueV{{@clueNum}}" value="{{@clueVal}}" required />
               </div>
             </div>
           </div> <!-- End Clue Row -->
@@ -61,6 +61,9 @@
     {{/times}}
   </div> <!-- End Accoridan -->
   {{!-- End Category Section --}}
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <br><br>
+  <div class="d-grid gap-2">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
 </form>
 <script language="javascript" src="/javascripts/game.js"></script>
