@@ -10,7 +10,6 @@ router.get('/new', function(req, res, next) {
   res.render('games/createGame', { title: 'Jeopardy!', renderTime: formattedDate(), addNewPlayerHTML: htmlString});
 });
 
-
 router.get('/show', async function(req, res, next) {
   // let games = await Game.find().populate('categories')
   let games = await Game.find().populate({
@@ -23,14 +22,35 @@ router.get('/show', async function(req, res, next) {
 });
 
 router.get('/play', async function(req, res, next) {
-  // let games = await Game.find().populate('categories')
-  let game = await Game.findById(req.id).populate({
+  let game = await Game.findById(req.query.id).populate({
     path: 'categories',
     populate: {
-      path: 'clues'
+      path: 'clues',
+      populate: {
+        path: 'category'
+      }
     }
   });
-  res.render('games/playGame', { game: game, title: 'Jeopardy!', renderTime: formattedDate()});
+  game = JSON.parse(JSON.stringify(game));
+  let valObj = {
+    100: [],
+    200: [],
+    300: [],
+    400: [],
+    500: [],
+  }
+  for (let cat of game.categories) {
+    for (let clue of cat.clues) {
+      clue['category'] = cat._id
+      valObj[clue.value].push(clue)
+    }
+  }
+  game['valObj'] = []
+  for (const [k, v] of Object.entries(valObj)) {
+    game['valObj'].push(v)
+  }
+  console.log(game)
+  res.render('games/playGame', { game: game, gameString: JSON.stringify(game), title: 'Jeopardy!', renderTime: formattedDate()});
 });
 
 

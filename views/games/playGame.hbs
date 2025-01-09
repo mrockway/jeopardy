@@ -1,1 +1,55 @@
-<h1>{{name}}</h1>
+{{!-- {{gameString}} --}}
+
+<h1>{{game.name}}</h1>
+
+<table class="table table-light table-bordered gameBoard">
+  <thead>
+    <tr class="text-center">
+      {{#each game.categories}}
+      <th scope="col">
+        <div class="card fs-3 text-warning">
+          <div class="card-body bg-primary text-center categoryName" id="{{this.name}}">
+            {{this.name}}
+          </div>
+        </div>
+      </th>
+      {{/each}}
+    </tr>
+  </thead>
+  <tbody>
+    {{#each game.valObj}}
+    <tr>
+      {{#each this}}
+      <td>
+        <div class="card fs-3 text-warning">
+          <div class="card-body bg-primary text-center clueCard" id="{{this._id}}_{{this.category}}_card" data-bs-toggle="modal" data-bs-target="#{{this._id}}_{{this.category}}_modal" id="{{this._id}}_{{this.category}}_value">
+            <div class="showValue" id="{{this._id}}_{{this.category}}_value">${{this.value}}</div>
+          </div>
+        </div>
+      </td>
+      <!-- Modal -->
+      <div class="modal fade" id="{{this._id}}_{{this.category}}_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="{{this._id}}_{{this.category}}Label" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+          <div class="modal-content bg-primary">
+            <div class="modal-body vh-100 align-content-center">
+              <div class="clueQuestion display-1 text-warning text-center" id="{{this._id}}_{{this.category}}_question">
+                {{this.question}}
+              </div>
+              <div class="clueAnswer display-1 text-warning text-center" id="{{this._id}}_{{this.category}}_answer" style="display:none;">
+                Answer: <br>{{this.answer}}
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="revealAnswer btn btn-primary" id="{{this._id}}_{{this.category}}_reveal">Reveal Answer</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal -->
+      {{/each}} <!-- End Clues -->
+    </tr>
+    {{/each}} <!-- End Category -->
+  </tbody>
+</table>
+<script language="javascript" src="/javascripts/playGame.js"></script>
