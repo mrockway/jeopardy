@@ -53,6 +53,37 @@ router.get('/play', async function(req, res, next) {
   res.render('games/playGame', { game: game, gameString: JSON.stringify(game), title: 'Jeopardy!', renderTime: formattedDate()});
 });
 
+router.post('/updatePoints', async function(req,res,next) {
+  let data = req.body.data;
+  console.log(data);
+  let game = await Game.findById(data.gameId);
+  let players = []
+  for (let el of game.players) {
+    if (data.winner == el.name) {
+      console.log(el.name)
+      players.push({
+        name: el.name,
+        score: el.score + parseInt(data.pointValue)
+      })
+    } else {
+      players.push(el)
+    }
+  }
+  game.players = players
+  await game.save()
+
+  res.status(200).send(game.players);
+})
+
+router.post('/updateClue', async function(req,res,next) {
+  let data = req.body.data;
+  console.log(data);
+  let clue = await Clue.findById(data.clueId);
+  clue.revealed = true;
+  await clue.save()
+
+  res.status(200).send(clue);
+})
 
 router.post('/saveGame', async function(req,res,next) {
   let gameReq = req.body.data;
@@ -88,6 +119,37 @@ router.post('/saveGame', async function(req,res,next) {
   newGame.categories = categoryIds;
   await newGame.save();
   res.status(200).send(newGame);
+})
+
+router.post('/resetGame', async function(req,res,next) {
+  let data = req.body.data;
+  console.log(data);
+  let clues = await Clue.updateMany({game: data.gameId}, {revealed: false});
+
+  let game = await Game.findById(data.gameId);
+  let players = []
+  for (let el of game.players) {
+    players.push({
+      name: el.name,
+      score: 0
+    })
+  }
+  game.players = players
+  await game.save()
+  res.status(200).send([JSON.stringify(game.players), JSON.stringify(clues)]);
+})
+
+router.post('/deletegame', async function(req,res,next) {
+  let data = req.body.data;
+  console.log(data);
+
+  let responses = [
+    await Game.findByIdAndDelete(data.gameId),
+    await Category.deleteMany({ gameId: data.gameId }),
+    await Clue.deleteMany({ gameId: data.gameId })
+  ]
+
+  res.status(200).send([JSON.stringify(responses)]);
 })
 
 function formattedDate() {

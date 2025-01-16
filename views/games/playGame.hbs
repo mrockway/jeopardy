@@ -1,7 +1,19 @@
 {{!-- {{gameString}} --}}
-
 <h1>{{game.name}}</h1>
+<div class="row sticky-top">
+  {{#each game.players}}
+  <dir class="col card fs-3 text-warning">
+    <div class="card-body bg-primary text-center scoreboardName">
+      {{this.name}}
+    </div>
+    <div class="card-body bg-primary text-center scoreboardScore" id="{{this.name}}_score">
+      ${{this.score}}
+    </div>
+  </dir>
+  {{/each}}
+</div>
 
+<div class="display-4 p-3 text-center">Game Categories</div>
 <table class="table table-light table-bordered gameBoard">
   <thead>
     <tr class="text-center">
@@ -21,8 +33,8 @@
     <tr>
       {{#each this}}
       <td>
-        <div class="card fs-3 text-warning">
-          <div class="card-body bg-primary text-center clueCard" id="{{this._id}}_{{this.category}}_card" data-bs-toggle="modal" data-bs-target="#{{this._id}}_{{this.category}}_modal" id="{{this._id}}_{{this.category}}_value">
+        <div class="card fs-3 text-warning bg-primary">
+          <div class="card-body bg-primary text-center clueCard" id="{{this._id}}_{{this.category}}_card" data-bs-toggle="modal" data-bs-target="#{{this._id}}_{{this.category}}_modal" id="{{this._id}}_{{this.category}}_value" {{#if this.revealed}}style="visibility: hidden;"{{/if}}>
             <div class="showValue" id="{{this._id}}_{{this.category}}_value">${{this.value}}</div>
           </div>
         </div>
@@ -36,12 +48,28 @@
                 {{this.question}}
               </div>
               <div class="clueAnswer display-1 text-warning text-center" id="{{this._id}}_{{this.category}}_answer" style="display:none;">
-                Answer: <br>{{this.answer}}
+                <div>
+                  Answer: <br>{{this.answer}}
+                </div>
+                <br><br>
+                <div class="row" data-pointValue="{{this.value}}" data-gameId="{{../../game._id}}" data-cardId="{{this._id}}">
+                  <div class="col-12">
+                    Who got it correct...
+                  </div>
+                  {{#each ../../game.players}}
+                    <div class="col card m-3 display-6 awardPlayer" data-player="{{this.name}}">
+                      {{this.name}}
+                    </div>
+                  {{/each}}
+                  <div class="col card m-3 display-6 awardPlayer">
+                    Nobody
+                  </div>
+                </div>
               </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="revealAnswer btn btn-primary" id="{{this._id}}_{{this.category}}_reveal">Reveal Answer</button>
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="{{this._id}}_close">Close</button>
             </div>
           </div>
         </div>

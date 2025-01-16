@@ -12,7 +12,7 @@ async function seedDB() {
 
   const gameDetails = {
     gameName: "Rockway Quiz",
-    players: ["Caroline", "Eloise", "Jess", "Masha/Cora"],
+    players: ["Caroline", "Eloise", "Jess", "MashaCora"],
     categories: [
       {
         name: "Harry Potter",

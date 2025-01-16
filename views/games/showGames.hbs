@@ -1,15 +1,23 @@
-<div class="row">
+<div class="row" style="margin: auto">
   {{#each games}}
   <div class="col-3 g-2">
     <div class="card">
       <div class="card-body">
         <div>Game Name: {{this.name}}</div>
       </div>
-        <a href="/games/play?id={{this.id}}" class="href link-underline link-underline-opacity-0">
-      <div class="card-footer d-grid gap-2">
-          <button class="getGame btn bg-primary-subtle">Play</button>
+      <div class="card-footer d-flex justify-content-evenly" data-gameid="{{this.id}}">
+        <div class="col">
+          <a href="/games/play?id={{this.id}}" class="href link-underline link-underline-opacity-0">
+            <button class="getGame btn bg-success-subtle border-success col">Play <i class="bi bi-play"></i></button>
+          </a>
+        </div>
+        <div class="col">
+          <button class="resetGame btn bg-warning-subtle border-warning col">Reset <i class="bi bi-arrow-repeat"></i></button>
+        </div>
+        <div class="col">
+          <button class="deleteGame btn bg-danger-subtle border border-danger" type="button" id="{{this._id}}">Delete <i class="bi bi-recycle" style="color: red;"></i></button>
+        </div>
       </div>
-        </a>
     </div>
   </div>
   {{/each}}

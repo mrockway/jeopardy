@@ -5,7 +5,7 @@ var gameSchema = new Schema(
   {
     name: { type: String, required: true },
     categories: [{ type: Schema.Types.ObjectId, ref: 'Category'}],
-    players: [{type: Schema.Types.Array}]
+    players: {type: Schema.Types.Array}
   },
   {
     timestamps: true,
