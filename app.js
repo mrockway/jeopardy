@@ -1,3 +1,4 @@
+require('@dotenvx/dotenvx').config();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -5,8 +6,14 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var hbs = require('hbs');
 
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/jeopardy');
+const db = require("./app/models");
+db.sequelize.sync()
+  .then(() => {
+    console.log("Synced db.");
+  })
+  .catch((err) => {
+    console.log("Failed to sync db: " + err.message);
+  });
 
 // Router setup
 var indexRouter = require('./routes/index');
