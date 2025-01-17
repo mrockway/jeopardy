@@ -344,6 +344,178 @@ async function seedDB() {
         },
       ],
     },
+    {
+      gameName: "3rd Grade - I Survived the BoB Quiz",
+      players: ["Eloise", "Caleb", "Mac", "Eli", "Caleb", "Brody"],
+      categories: [
+        {
+          name: "Quakes",
+          clues: [
+            {
+              question: "Where was the most powerful earthquake ever recorded?",
+              answer: "Off the coast of Chile",
+              value: 100,
+            },
+            {
+              question:
+                "What famous Seattle landmark swayed during the Alaskan earthquake?",
+              answer: "The Space Needle",
+              value: 200,
+            },
+            {
+              question:
+                "What are the stong waves called that are caused after an earthquake?",
+              answer: "Tsunamis",
+              value: 300,
+            },
+            {
+              question:
+                "Why did so few people die in the 1964 quake, despite it being the second largest ever recorded?",
+              answer:
+                "Because Alaska is mostly wilderness (sparsly populated) (less that 1% occupied by humans)",
+              value: 400,
+            },
+            {
+              question:
+                "What theory did scientist come up with to explain how earthquakes happen?",
+              answer: "Plate techtonics",
+              value: 500,
+            },
+          ],
+        },
+        {
+          name: "Characters",
+          clues: [
+            {
+              question:
+                "Who got stuck in the wilderness while rabbit hunting due to a storm?",
+              answer: "Jackson",
+              value: 100,
+            },
+            {
+              question: "Who hired Jacksons mom and dad?",
+              answer: "Uncle Solly",
+              value: 200,
+            },
+            {
+              question: "What is Jacksons teachers name?",
+              answer: "Miss Lawrence",
+              value: 300,
+            },
+            {
+              question:
+                "Who said they would miss Twinkies if they lived in the bush?",
+              answer: "Chris",
+              value: 400,
+            },
+            {
+              question: "Who described on orange as tasting like sunshine?",
+              answer: "Nora",
+              value: 500,
+            },
+          ],
+        },
+        {
+          name: "Story",
+          clues: [
+            {
+              question: "What caused the fire at the cabin?",
+              answer: "The winter bear knocked over the stove",
+              value: 100,
+            },
+            {
+              question: "What was inside the bearproof drums?",
+              answer:
+                "Tent, sleeping bags, flashlights, first aid kit, camping stove, a pot to melt water and moose jerky",
+              value: 200,
+            },
+            {
+              question: "What story did Jackson tell his new classmates?",
+              answer:
+                "His day fishing, when on his way home. He saw a pack of wolves and a grizzly bear fighting",
+              value: 300,
+            },
+            {
+              question: "Who fell into a fissure?",
+              answer: "Jackson",
+              value: 400,
+            },
+            {
+              question: "Why did Valdez's coastline crumble into the sea?",
+              answer:
+                "It wasn't built on rock. It was built on a mixture of sand and water.",
+              value: 500,
+            },
+          ],
+        },
+        {
+          name: "Alaska",
+          clues: [
+            {
+              question: "What is the capital city of Alaska?",
+              answer: "Juneau",
+              value: 100,
+            },
+            {
+              question: "What is the largest city in Alaska?",
+              answer: "Anchorage",
+              value: 200,
+            },
+            {
+              question: "When did Alaska become a state?",
+              answer: "1959",
+              value: 300,
+            },
+            {
+              question: "When did people first come to Alaska?",
+              answer: "During the ice age",
+              value: 400,
+            },
+            {
+              question:
+                "In Alaska, what is it called when you don't live in a town or city?",
+              answer: "Living in the bush",
+              value: 500,
+            },
+          ],
+        },
+        {
+          name: "BoB Books",
+          clues: [
+            {
+              question:
+                "In which book does a character break apart crackers and smuggle the crumbs under the table?",
+              answer: "Amelia Six",
+              value: 100,
+            },
+            {
+              question:
+                "In which book can a character see a calm, flat ocean surface from the top of an outcrop?",
+              answer: "High and Dry",
+              value: 200,
+            },
+            {
+              question:
+                "In which book do fierce characters live on a faraway Indonesian island?",
+              answer: "Joan Proctor, Dragon Doctor",
+              value: 300,
+            },
+            {
+              question:
+                "In which book is a character's favorite person someone who takes his/her side whenever they get in trouble?",
+              answer: "Marya Khan and the Incredible Henna Party",
+              value: 400,
+            },
+            {
+              question:
+                "In which book are fleas, ticks, fungi, and bacteria all health hazards?",
+              answer: "Saving Winslow",
+              value: 500,
+            },
+          ],
+        },
+      ],
+    },
   ];
 
   for (let gameDetails of seedGames) {
