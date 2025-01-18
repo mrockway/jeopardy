@@ -11,7 +11,9 @@ $(function () {
       data: JSON.stringify({ data: obj }),
       contentType: "application/json; charset=utf-8",
       dataType: "json"
-    }).done(function( data ) {console.log('data')});
+    }).done(function( data ) {
+      window.location.href = '/games/show'
+    });
 
   });
 

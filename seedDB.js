@@ -174,7 +174,7 @@ async function seedDB() {
     },
     {
       gameName: "4th Grade - I Survived the BoB Quiz",
-      players: ["Caroline", "Avia", "Grayson", "Tyler", "Gavin"],
+      players: ["Caroline", "Avia", "Grayson", "Tyler", "Gavin", "Michael & Jess"],
       categories: [
         {
           name: "Quakes",
@@ -192,7 +192,7 @@ async function seedDB() {
             },
             {
               question:
-                "What are the stong waves called that are caused after an earthquake?",
+                "What are the strong waves called that are caused after an earthquake?",
               answer: "Tsunamis",
               value: 300,
             },
@@ -200,13 +200,13 @@ async function seedDB() {
               question:
                 "Why did so few people die in the 1964 quake, despite it being the second largest ever recorded?",
               answer:
-                "Because Alaska is mostly wilderness (sparsly populated) (less that 1% occupied by humans)",
+                "Because Alaska is mostly wilderness (sparsely populated) (less that 1% occupied by humans)",
               value: 400,
             },
             {
               question:
                 "What theory did scientist come up with to explain how earthquakes happen?",
-              answer: "Plate techtonics",
+              answer: "Plate tectonics",
               value: 500,
             },
           ],
@@ -346,7 +346,7 @@ async function seedDB() {
     },
     {
       gameName: "3rd Grade - I Survived the BoB Quiz",
-      players: ["Eloise", "Caleb", "Mac", "Eli", "Caleb", "Brody"],
+      players: ["Eloise", "Caleb", "Mac", "Eli", "Madison", "Brody", "Laura & Rosalie"],
       categories: [
         {
           name: "Quakes",
@@ -364,7 +364,7 @@ async function seedDB() {
             },
             {
               question:
-                "What are the stong waves called that are caused after an earthquake?",
+                "What are the strong waves called that are caused after an earthquake?",
               answer: "Tsunamis",
               value: 300,
             },
@@ -372,13 +372,13 @@ async function seedDB() {
               question:
                 "Why did so few people die in the 1964 quake, despite it being the second largest ever recorded?",
               answer:
-                "Because Alaska is mostly wilderness (sparsly populated) (less that 1% occupied by humans)",
+                "Because Alaska is mostly wilderness (sparsely populated) (less that 1% occupied by humans)",
               value: 400,
             },
             {
               question:
                 "What theory did scientist come up with to explain how earthquakes happen?",
-              answer: "Plate techtonics",
+              answer: "Plate tectonics",
               value: 500,
             },
           ],
@@ -519,11 +519,20 @@ async function seedDB() {
   ];
 
   for (let gameDetails of seedGames) {
+    if (gameDetails.gameName == 'Rockway Quiz') {
+      continue;
+    }
     let newGame = new Game();
     newGame.name = gameDetails.gameName;
 
     for (let player of gameDetails.players) {
-      newGame.players.push({ name: player, score: 0 });
+      if (gameDetails.gameName = '4th Grade - I Survived the BoB Quiz' && player == 'Michael & Jess') {
+        newGame.players.push({ name: player, score: 999999 });
+      } else if (gameDetails.gameName = '3rd Grade - I Survived the BoB Quiz' && player == 'Laura & Rosalie') {
+        newGame.players.push({ name: player, score: 999999 });
+      } else {
+        newGame.players.push({ name: player, score: 0 });
+      }
     }
     await newGame.save();
     console.log("saved game");
@@ -552,4 +561,5 @@ async function seedDB() {
     }
     await newGame.save();
   }
+  process.exit(0);
 }

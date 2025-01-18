@@ -39,6 +39,11 @@ router.get('/play', async function(req, res, next) {
     400: [],
     500: [],
   }
+  let players = []
+  for (let player of game.players) {
+    players.push({name: player.name, score: player.score.toLocaleString()})
+  }
+  game.players = players;
   for (let cat of game.categories) {
     for (let clue of cat.clues) {
       clue['category'] = cat._id
@@ -50,7 +55,7 @@ router.get('/play', async function(req, res, next) {
     game['valObj'].push(v)
   }
   console.log(game)
-  res.render('games/playGame', { game: game, gameString: JSON.stringify(game), title: 'Jeopardy!', renderTime: formattedDate()});
+  res.render('games/playGame', { game: game, gameString: JSON.stringify(game), title: game.name, renderTime: formattedDate()});
 });
 
 router.post('/updatePoints', async function(req,res,next) {
