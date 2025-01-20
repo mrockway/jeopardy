@@ -1,31 +1,31 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const { Game, Clue, Category } = require("../models/index.js");
-const fs = require("fs");
-var path = require("path");
+const { Game, Clue, Category } = require('../models/index.js');
+const fs = require('fs');
+var path = require('path');
 
 router.get("/new", function (req, res, next) {
   // Update for SQL
-  let htmlString = fs.readFileSync(path.join(__dirname, "../views/partials/addNewPlayer.hbs"), "utf8");
-  res.render("games/createGame", {
-    title: "Jeopardy!",
+  let htmlString = fs.readFileSync(path.join(__dirname, '../views/partials/addNewPlayer.hbs'), 'utf8');
+  res.render('games/createGame', {
+    title: 'Jeopardy!',
     renderTime: formattedDate(),
     addNewPlayerHTML: htmlString,
   });
 });
 
-router.get("/show", async function (req, res, next) {
+router.get('/show', async function (req, res, next) {
   // Update for SQL
   let gameList = [];
   let games = await Game.findAll();
-  res.render("games/showGames", {
+  res.render('games/showGames', {
     games: games,
-    title: "Jeopardy!",
+    title: 'Jeopardy!',
     renderTime: formattedDate(),
   });
 });
 
-router.get("/play", async function (req, res, next) {
+router.get('/play', async function (req, res, next) {
   // Update for SQL
   let game = await Game.findByPk(req.query.id, { include: { all: true, nested: true } });
 
@@ -39,25 +39,25 @@ router.get("/play", async function (req, res, next) {
   };
   for (let cat of game.Categories) {
     for (let clue of cat.Clues) {
-      clue["category"] = cat._id;
+      clue['category'] = cat._id;
       valObj[clue.value].push(clue);
     }
   }
-  game["valObj"] = [];
+  game['valObj'] = [];
   for (const [k, v] of Object.entries(valObj)) {
-    game["valObj"].push(v);
+    game['valObj'].push(v);
   }
 
   console.log(game);
-  res.render("games/playGame", {
+  res.render('games/playGame', {
     game: game,
     gameString: JSON.stringify(game),
-    title: "Jeopardy!",
+    title: 'Jeopardy!',
     renderTime: formattedDate(),
   });
 });
 
-router.post("/updatePoints", async function (req, res, next) {
+router.post('/updatePoints', async function (req, res, next) {
   // Update for SQL
   let data = req.body.data;
   console.log(data);
@@ -80,7 +80,7 @@ router.post("/updatePoints", async function (req, res, next) {
   res.status(200).send(game.players);
 });
 
-router.post("/updateClue", async function (req, res, next) {
+router.post('/updateClue', async function (req, res, next) {
   // Update for SQL
   let data = req.body.data;
   console.log(data);
@@ -91,7 +91,7 @@ router.post("/updateClue", async function (req, res, next) {
   res.status(200).send(clue);
 });
 
-router.post("/saveGame", async function (req, res, next) {
+router.post('/saveGame', async function (req, res, next) {
   let gameReq = req.body.data;
   let newGame = Game.build({ name: gameReq.gameName, players: gameReq.players });
   await newGame.save();
@@ -120,7 +120,7 @@ router.post("/saveGame", async function (req, res, next) {
   res.status(200).send(JSON.stringify(g));
 });
 
-router.post("/resetGame", async function (req, res, next) {
+router.post('/resetGame', async function (req, res, next) {
   let data = req.body.data;
   console.log(data);
   let clues = await Clue.update(
@@ -145,7 +145,7 @@ router.post("/resetGame", async function (req, res, next) {
   res.status(200).send([JSON.stringify(game.players), JSON.stringify(clues)]);
 });
 
-router.post("/deletegame", async function (req, res, next) {
+router.post('/deletegame', async function (req, res, next) {
   let data = req.body.data;
   console.log(data);
 
@@ -163,6 +163,6 @@ router.post("/deletegame", async function (req, res, next) {
 });
 
 function formattedDate() {
-  return new Date().toISOString().slice(0, 19).replace("T", " ");
+  return new Date().toISOString().slice(0, 19).replace('T', ' ');
 }
 module.exports = router;
