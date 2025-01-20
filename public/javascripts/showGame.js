@@ -1,7 +1,7 @@
 $(function () {
 
   $('.resetGame').click(function(e) {
-    let gameId = $(this).parent().parent().data('gameid')
+    let gameId = $(this).data('resetid');
     $.ajax({
       type: "POST",
       url: "/games/resetGame",
@@ -15,11 +15,12 @@ $(function () {
   })
 
   $('.deleteGame').click(function(e) {
+    let gameId = $(this).data('deleteid')
+    console.log($(this))
     if (!confirm('Are you sure you want to delete?')) {
       console.log('Not deleted.');
       return;
     }
-    let gameId = $(this).attr('id')
 
     $.ajax({
       type: "POST",
@@ -29,8 +30,8 @@ $(function () {
       dataType: "json"
     }).done(function( data ) {
       console.log(data)
+      $(`[data-gamecardid="${gameId}"]`).hide()
       alert('Game has been deleted');
-      $(this).hide()
     });
   })
 });

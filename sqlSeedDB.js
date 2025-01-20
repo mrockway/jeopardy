@@ -1,14 +1,12 @@
 // Seed database
-seedDB();
+seedDB()
 
 async function seedDB() {
-  const mongoose = require("mongoose");
-  mongoose.connect("mongodb://localhost/jeopardy");
-  const { Game, Clue, Category } = require("./models/index.js");
+  const {Game, Clue, Category} = require('./models/index.js')
 
-  await Game.deleteMany();
-  await Clue.deleteMany();
-  await Category.deleteMany();
+  await Game.truncate({ cascade: true, restartIdentity: true });
+  await Category.truncate({ cascade: true, restartIdentity: true });
+  await Clue.truncate({ cascade: true, restartIdentity: true });
 
   const seedGames = [
     {
@@ -519,47 +517,40 @@ async function seedDB() {
   ];
 
   for (let gameDetails of seedGames) {
-    if (gameDetails.gameName == 'Rockway Quiz') {
-      continue;
-    }
-    let newGame = new Game();
+    let newGame = Game.build();
     newGame.name = gameDetails.gameName;
-
+    let players = []
     for (let player of gameDetails.players) {
       if (gameDetails.gameName = '4th Grade - I Survived the BoB Quiz' && player == 'Michael & Jess') {
-        newGame.players.push({ name: player, score: 999999 });
+        players.push({ name: player, score: 999999 });
       } else if (gameDetails.gameName = '3rd Grade - I Survived the BoB Quiz' && player == 'Laura & Rosalie') {
-        newGame.players.push({ name: player, score: 999999 });
+        players.push({ name: player, score: 999999 });
       } else {
-        newGame.players.push({ name: player, score: 0 });
+        players.push({ name: player, score: 0 });
       }
     }
+    newGame.players = players;
     await newGame.save();
     console.log("saved game");
     for (let cat of gameDetails.categories) {
-      let newCategory = new Category({
+      let newCategory = Category.build({
         name: cat.name,
-        game: newGame.id,
+        gameId: newGame.id,
       });
       await newCategory.save();
       console.log("saved category");
-      newGame.categories.push(newCategory.id);
       for (let clue of cat.clues) {
-        let newClue = new Clue({
+        let newClue = Clue.build({
           question: clue.question,
           answer: clue.answer,
           value: clue.value,
-          cateogry: newCategory.id,
-          game: newGame.id,
+          categoryId: newCategory.id,
+          gameId: newGame.id,
         });
         await newClue.save();
         console.log("saved clue");
-        newCategory.clues.push(newClue.id);
       }
-      await newCategory.save();
-      console.log("saved category again");
     }
-    await newGame.save();
   }
   process.exit(0);
 }

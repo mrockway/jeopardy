@@ -1,36 +1,34 @@
 const express = require('express');
 const router = express.Router();
-const {Game, Clue, Category} = require('../models/index.js')
+const { Game, Clue, Category } = require('../models/index.js');
 const fs = require('fs');
 var path = require('path');
 
-
-router.get('/new', function(req, res, next) {
+router.get("/new", function (req, res, next) {
+  // Update for SQL
   let htmlString = fs.readFileSync(path.join(__dirname, '../views/partials/addNewPlayer.hbs'), 'utf8');
-  res.render('games/createGame', { title: 'Jeopardy!', renderTime: formattedDate(), addNewPlayerHTML: htmlString});
+  res.render('games/createGame', {
+    title: 'Jeopardy!',
+    renderTime: formattedDate(),
+    addNewPlayerHTML: htmlString,
+  });
 });
 
-router.get('/show', async function(req, res, next) {
-  // let games = await Game.find().populate('categories')
-  let games = await Game.find().populate({
-    path: 'categories',
-    populate: {
-      path: 'clues'
-    }
+router.get('/show', async function (req, res, next) {
+  // Update for SQL
+  let gameList = [];
+  let games = await Game.findAll();
+  res.render('games/showGames', {
+    games: games,
+    title: 'Jeopardy!',
+    renderTime: formattedDate(),
   });
-  res.render('games/showGames', { games: games, title: 'Jeopardy!', renderTime: formattedDate()});
 });
 
-router.get('/play', async function(req, res, next) {
-  let game = await Game.findById(req.query.id).populate({
-    path: 'categories',
-    populate: {
-      path: 'clues',
-      populate: {
-        path: 'category'
-      }
-    }
-  });
+router.get('/play', async function (req, res, next) {
+  // Update for SQL
+  let game = await Game.findByPk(req.query.id, { include: { all: true, nested: true } });
+
   game = JSON.parse(JSON.stringify(game));
   let valObj = {
     100: [],
@@ -38,124 +36,131 @@ router.get('/play', async function(req, res, next) {
     300: [],
     400: [],
     500: [],
-  }
-  let players = []
-  for (let player of game.players) {
-    players.push({name: player.name, score: player.score.toLocaleString()})
-  }
-  game.players = players;
-  for (let cat of game.categories) {
-    for (let clue of cat.clues) {
-      clue['category'] = cat._id
-      valObj[clue.value].push(clue)
+  };
+  for (let cat of game.Categories) {
+    for (let clue of cat.Clues) {
+      clue['category'] = cat.id;
+      valObj[clue.value].push(clue);
     }
   }
-  game['valObj'] = []
+  game['valObj'] = [];
   for (const [k, v] of Object.entries(valObj)) {
-    game['valObj'].push(v)
+    game['valObj'].push(v);
   }
-  console.log(game)
-  res.render('games/playGame', { game: game, gameString: JSON.stringify(game), title: game.name, renderTime: formattedDate()});
+
+  console.log(game);
+  res.render('games/playGame', {
+    game: game,
+    gameString: JSON.stringify(game),
+    title: 'Jeopardy!',
+    renderTime: formattedDate(),
+  });
 });
 
-router.post('/updatePoints', async function(req,res,next) {
+router.post('/updatePoints', async function (req, res, next) {
+  // Update for SQL
   let data = req.body.data;
   console.log(data);
-  let game = await Game.findById(data.gameId);
-  let players = []
+  let game = await Game.findByPk(data.gameId);
+  let players = [];
   for (let el of game.players) {
     if (data.winner == el.name) {
-      console.log(el.name)
+      console.log(el.name);
       players.push({
         name: el.name,
-        score: el.score + parseInt(data.pointValue)
-      })
+        score: el.score + parseInt(data.pointValue),
+      });
     } else {
-      players.push(el)
+      players.push(el);
     }
   }
-  game.players = players
-  await game.save()
+  game.players = players;
+  await game.save();
 
   res.status(200).send(game.players);
-})
+});
 
-router.post('/updateClue', async function(req,res,next) {
+router.post('/updateClue', async function (req, res, next) {
+  // Update for SQL
   let data = req.body.data;
   console.log(data);
-  let clue = await Clue.findById(data.clueId);
+  let clue = await Clue.findByPk(data.clueId);
   clue.revealed = true;
-  await clue.save()
+  await clue.save();
 
   res.status(200).send(clue);
-})
+});
 
-router.post('/saveGame', async function(req,res,next) {
+router.post('/saveGame', async function (req, res, next) {
   let gameReq = req.body.data;
-  let newGame = new Game({name: gameReq.gameName, players: gameReq.players});
+  let newGame = Game.build({ name: gameReq.gameName, players: gameReq.players });
   await newGame.save();
 
-  let categoryIds = []
   for (let i = 0; i < gameReq.categories.length; i++) {
     let cat = gameReq.categories[i];
-    let newCategory = new Category({
+    let newCategory = Category.build({
       name: cat.name,
-      game: newGame.id
+      gameId: newGame.id,
     });
     await newCategory.save();
-    categoryIds.push(newCategory.id);
 
-    let clueIds = []
     for (let j = 0; j < cat.clues.length; j++) {
       let clue = cat.clues[j];
-      let newClue = new Clue({
-        game: newGame.id,
-        category: newCategory.id,
+      let newClue = Clue.build({
+        gameId: newGame.id,
+        categoryId: newCategory.id,
         question: clue.question,
         answer: clue.answer,
-        value: clue.value
+        value: clue.value,
       });
       await newClue.save();
-      clueIds.push(newClue.id);
     }
-    newCategory.clues = clueIds;
-    await newCategory.save();
   }
-  newGame.categories = categoryIds;
-  await newGame.save();
-  res.status(200).send(newGame);
-})
+  let g = await Game.findByPk(newGame.id, { include: { all: true, nested: true } })
+  res.status(200).send(JSON.stringify(g));
+});
 
-router.post('/resetGame', async function(req,res,next) {
+router.post('/resetGame', async function (req, res, next) {
   let data = req.body.data;
   console.log(data);
-  let clues = await Clue.updateMany({game: data.gameId}, {revealed: false});
+  let clues = await Clue.update(
+    { revealed: false },
+  {
+    where: {
+      gameId: data.gameId,
+    },
+  },
+  );
 
-  let game = await Game.findById(data.gameId);
-  let players = []
+  let game = await Game.findByPk(data.gameId);
+  let players = [];
   for (let el of game.players) {
     players.push({
       name: el.name,
-      score: 0
-    })
+      score: 0,
+    });
   }
-  game.players = players
-  await game.save()
+  game.players = players;
+  await game.save();
   res.status(200).send([JSON.stringify(game.players), JSON.stringify(clues)]);
-})
+});
 
-router.post('/deletegame', async function(req,res,next) {
+router.post('/deletegame', async function (req, res, next) {
   let data = req.body.data;
   console.log(data);
 
   let responses = [
-    await Game.findByIdAndDelete(data.gameId),
-    await Category.deleteMany({ gameId: data.gameId }),
-    await Clue.deleteMany({ gameId: data.gameId })
-  ]
+    await Game.destroy({
+      where: {
+        id: data.gameId
+      },
+    }),
+    // await Category.deleteMany({ gameId: data.gameId }),
+    // await Clue.deleteMany({ gameId: data.gameId }),
+  ];
 
   res.status(200).send([JSON.stringify(responses)]);
-})
+});
 
 function formattedDate() {
   return new Date().toISOString().slice(0, 19).replace('T', ' ');

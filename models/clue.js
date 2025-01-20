@@ -1,27 +1,41 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+'use strict';
+const { Model } = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Clue extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+      models.Clue.belongsTo(models.Category, {
+        onDelete: 'cascade',
+        foreignKey: {
+          name: 'categoryId'
+        }
+      })
 
-var clueSchema = new Schema(
-  {
-    game: { type: Schema.Types.ObjectId, ref: 'Game'},
-    category: { type: Schema.Types.ObjectId, ref: 'Category'},
-    question: { type: String, required: true },
-    answer: {type: String, required: true},
-    value: {type: Number, required: true, enum: [100, 200, 300, 400, 500]},
-    dailyDouble: {type: Boolean, default: false, required: true},
-    revealed: {type: Boolean, default: false, required: true}
-  },
-  {
-    timestamps: true,
-    async populateRecord(){
-      return await this.populate('game').populate('category');
-    },
-    toJSON() {
-      return this.toObject()
+      models.Clue.belongsTo(models.Game, {
+        onDelete: 'cascade',
+        foreignKey: {
+          name: 'gameId'
+        }
+      })
     }
   }
-);
-
-var Clue = mongoose.model("Clue", clueSchema);
-
-module.exports = Clue;
+  Clue.init({
+    question: DataTypes.STRING,
+    answer: DataTypes.STRING,
+    value: DataTypes.INTEGER,
+    categoryId: DataTypes.INTEGER,
+    gameId: DataTypes.INTEGER,
+    revealed: DataTypes.BOOLEAN,
+    dailyDouble: DataTypes.BOOLEAN,
+  }, {
+    sequelize,
+    modelName: 'Clue',
+    tableName: 'clues'
+  });
+  return Clue;
+};

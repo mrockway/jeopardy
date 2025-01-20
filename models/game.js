@@ -1,30 +1,30 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
-
-var gameSchema = new Schema(
-  {
-    name: { type: String, required: true },
-    categories: [{ type: Schema.Types.ObjectId, ref: 'Category'}],
-    players: {type: Schema.Types.Array}
-  },
-  {
-    timestamps: true,
-    methods: {
-      async populateRecord(){
-        return await this.populate({
-          path: 'categories',
-          populate: {
-            path: 'clues'
-          }
-        });
-      },
-      toJSON() {
-        return this.toObject()
-      }
+"use strict";
+const { Model } = require("sequelize");
+module.exports = (sequelize, DataTypes) => {
+  class Game extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      models.Game.hasMany(models.Category, {
+        onDelete: "CASCADE",
+        foreignKey: {
+        name: 'gameId'
+      }});
     }
   }
-);
-
-var Game = mongoose.model("Game", gameSchema);
-
-module.exports = Game;
+  Game.init(
+    {
+      name: DataTypes.STRING,
+      players: DataTypes.ARRAY(DataTypes.JSONB),
+    },
+    {
+      sequelize,
+      modelName: "Game",
+      tableName: "games",
+    },
+  );
+  return Game;
+};

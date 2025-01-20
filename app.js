@@ -1,12 +1,10 @@
+require('@dotenvx/dotenvx').config();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var hbs = require('hbs');
-
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/jeopardy');
 
 // Router setup
 var indexRouter = require('./routes/index');
