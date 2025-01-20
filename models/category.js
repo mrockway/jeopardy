@@ -10,13 +10,14 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       models.Category.belongsTo(models.Game, {
-        onDelete: 'CASCADE',
+        onDelete: 'cascade',
         foreignKey: {
           name: 'gameId'
         }
       })
 
       models.Category.hasMany(models.Clue, {
+        onDelete: 'cascade',
         foreignKey: {
           name: 'categoryId'
         }

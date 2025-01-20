@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var hbs = require('hbs');
 
-const db = require("./app/models");
+const db = require("./models");
 db.sequelize.sync()
   .then(() => {
     console.log("Synced db.");

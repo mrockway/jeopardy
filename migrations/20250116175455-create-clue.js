@@ -9,8 +9,20 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      question: {
         type: Sequelize.STRING
+      },
+      answer: {
+        type: Sequelize.STRING
+      },
+      value: {
+        type: Sequelize.INTEGER
+      },
+      revealed: {
+        type: Sequelize.BOOLEAN
+      },
+      dailyDouble: {
+        type: Sequelize.BOOLEAN
       },
       gameId: {
         type: Sequelize.DataTypes.INTEGER,
@@ -19,6 +31,7 @@ module.exports = {
           key: 'id',
         },
         allowNull: false,
+        onDelete: "CASCADE"
       },
       categoryId: {
         type: Sequelize.DataTypes.INTEGER,
@@ -27,6 +40,7 @@ module.exports = {
           key: 'id',
         },
         allowNull: false,
+        onDelete: "CASCADE"
       },
       createdAt: {
         allowNull: false,

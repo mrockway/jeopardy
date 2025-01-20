@@ -10,7 +10,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       models.Game.hasMany(models.Category, {
         onDelete: "CASCADE",
-      });
+        foreignKey: {
+        name: 'gameId'
+      }});
     }
   }
   Game.init(

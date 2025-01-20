@@ -17,7 +17,7 @@
 <table class="table table-light table-bordered gameBoard">
   <thead>
     <tr class="text-center">
-      {{#each game.categories}}
+      {{#each game.Categories}}
       <th scope="col">
         <div class="card fs-3 text-warning">
           <div class="card-body bg-primary text-center categoryName" id="{{this.name}}">
@@ -34,25 +34,25 @@
       {{#each this}}
       <td>
         <div class="card fs-3 text-warning bg-primary">
-          <div class="card-body bg-primary text-center clueCard" id="{{this._id}}_{{this.category}}_card" data-bs-toggle="modal" data-bs-target="#{{this._id}}_{{this.category}}_modal" id="{{this._id}}_{{this.category}}_value" {{#if this.revealed}}style="visibility: hidden;"{{/if}}>
-            <div class="showValue" id="{{this._id}}_{{this.category}}_value">${{this.value}}</div>
+          <div class="card-body bg-primary text-center clueCard" id="{{this.id}}_{{this.categoryId}}_card" data-bs-toggle="modal" data-bs-target="#{{this.id}}_{{this.categoryId}}_modal" id="{{this.id}}_{{this.categoryId}}_value" {{#if this.revealed}}style="visibility: hidden;"{{/if}}>
+            <div class="showValue" id="{{this.id}}_{{this.categoryId}}_value">${{this.value}}</div>
           </div>
         </div>
       </td>
       <!-- Modal -->
-      <div class="modal fade" id="{{this._id}}_{{this.category}}_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="{{this._id}}_{{this.category}}Label" aria-hidden="true">
+      <div class="modal fade" id="{{this.id}}_{{this.categoryId}}_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="{{this.id}}_{{this.categoryId}}Label" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
           <div class="modal-content bg-primary">
             <div class="modal-body vh-100 align-content-center">
-              <div class="clueQuestion display-1 text-warning text-center" id="{{this._id}}_{{this.category}}_question">
+              <div class="clueQuestion display-1 text-warning text-center" id="{{this.id}}_{{this.categoryId}}_question">
                 {{this.question}}
               </div>
-              <div class="clueAnswer display-1 text-warning text-center" id="{{this._id}}_{{this.category}}_answer" style="display:none;">
+              <div class="clueAnswer display-1 text-warning text-center" id="{{this.id}}_{{this.categoryId}}_answer" style="display:none;">
                 <div>
                   Answer: <br>{{this.answer}}
                 </div>
                 <br><br>
-                <div class="row" data-pointValue="{{this.value}}" data-gameId="{{../../game._id}}" data-cardId="{{this._id}}">
+                <div class="row" data-pointValue="{{this.value}}" data-gameId="{{../../game.id}}" data-cardId="{{this.id}}">
                   <div class="col-12">
                     Who got it correct...
                   </div>
@@ -68,8 +68,8 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="revealAnswer btn btn-primary" id="{{this._id}}_{{this.category}}_reveal">Reveal Answer</button>
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="{{this._id}}_close">Close</button>
+              <button type="button" class="revealAnswer btn btn-primary" id="{{this.id}}_{{this.categoryId}}_reveal">Reveal Answer</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="{{this.id}}_close">Close</button>
             </div>
           </div>
         </div>

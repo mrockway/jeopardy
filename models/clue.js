@@ -10,14 +10,14 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       models.Clue.belongsTo(models.Category, {
-        onDelete: 'CASCADE',
+        onDelete: 'cascade',
         foreignKey: {
           name: 'categoryId'
         }
       })
 
       models.Clue.belongsTo(models.Game, {
-        onDelete: 'CASCADE',
+        onDelete: 'cascade',
         foreignKey: {
           name: 'gameId'
         }
@@ -25,9 +25,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Clue.init({
-    name: DataTypes.STRING,
+    question: DataTypes.STRING,
+    answer: DataTypes.STRING,
+    value: DataTypes.INTEGER,
     categoryId: DataTypes.INTEGER,
-    gameId: DataTypes.INTEGER
+    gameId: DataTypes.INTEGER,
+    revealed: DataTypes.BOOLEAN,
+    dailyDouble: DataTypes.BOOLEAN,
   }, {
     sequelize,
     modelName: 'Clue',

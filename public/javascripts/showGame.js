@@ -20,6 +20,7 @@ $(function () {
       return;
     }
     let gameId = $(this).attr('id')
+    console.log($(this))
 
     $.ajax({
       type: "POST",
