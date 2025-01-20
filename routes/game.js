@@ -39,7 +39,7 @@ router.get('/play', async function (req, res, next) {
   };
   for (let cat of game.Categories) {
     for (let clue of cat.Clues) {
-      clue['category'] = cat._id;
+      clue['category'] = cat.id;
       valObj[clue.value].push(clue);
     }
   }
