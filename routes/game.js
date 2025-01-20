@@ -1,16 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const { Op } = require("sequelize");
 const { Game, Clue, Category } = require("../models/index.js");
 const fs = require("fs");
 var path = require("path");
 
 router.get("/new", function (req, res, next) {
   // Update for SQL
-  let htmlString = fs.readFileSync(
-    path.join(__dirname, "../views/partials/addNewPlayer.hbs"),
-    "utf8"
-  );
+  let htmlString = fs.readFileSync(path.join(__dirname, "../views/partials/addNewPlayer.hbs"), "utf8");
   res.render("games/createGame", {
     title: "Jeopardy!",
     renderTime: formattedDate(),
