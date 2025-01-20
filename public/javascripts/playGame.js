@@ -41,7 +41,7 @@ $(function() {
     }).done(function( data ) {
       console.log(data)
       for (const el of data) {
-        $(`#${el.name}_score`).text(`$${el.score}`)
+        $(`#${el.name}_score`).text(`$${el.score.toLocaleString()}`)
       }
     });
     // Close modal when clicked

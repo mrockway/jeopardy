@@ -51,6 +51,7 @@ router.get("/play", async function (req, res, next) {
   for (const [k, v] of Object.entries(valObj)) {
     game["valObj"].push(v);
   }
+
   console.log(game);
   res.render("games/playGame", {
     game: game,
