@@ -1,9 +1,10 @@
 {
   "name": "jeopardy",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "seedProdDB": "node sqlSeedDB.js"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.33.0",
