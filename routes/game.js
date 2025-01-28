@@ -1,28 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { Game, Clue, Category } = require('../models/index.js');
-const fs = require('fs');
-var path = require('path');
-
-router.get("/new", function (req, res, next) {
-  // Update for SQL
-  let htmlString = fs.readFileSync(path.join(__dirname, '../views/partials/addNewPlayer.hbs'), 'utf8');
-  res.render('games/createGame', {
-    title: 'Jeopardy!',
-    renderTime: formattedDate(),
-    addNewPlayerHTML: htmlString,
-  });
-});
 
 router.get('/show', async function (req, res, next) {
-  // Update for SQL
-  let gameList = [];
   let games = await Game.findAll();
-  res.render('games/showGames', {
-    games: games,
-    title: 'Jeopardy!',
-    renderTime: formattedDate(),
-  });
+  res.status(200).json({games: games})
 });
 
 router.get('/play', async function (req, res, next) {
@@ -48,23 +30,18 @@ router.get('/play', async function (req, res, next) {
     game['valObj'].push(v);
   }
 
-  res.render('games/playGame', {
-    game: game,
-    gameString: JSON.stringify(game),
-    title: 'Jeopardy!',
-    renderTime: formattedDate(),
-  });
+  res.status(200).json({game: game,
+    gameString: JSON.stringify(game)
+  })
 });
 
 router.post('/updatePoints', async function (req, res, next) {
   // Update for SQL
   let data = req.body.data;
-  console.log(data);
   let game = await Game.findByPk(data.gameId);
   let players = [];
   for (let el of game.players) {
     if (data.winner == el.name) {
-      console.log(el.name);
       players.push({
         name: el.name,
         score: el.score + parseInt(data.pointValue),
@@ -87,7 +64,7 @@ router.post('/updateClue', async function (req, res, next) {
   clue.revealed = true;
   await clue.save();
 
-  res.status(200).send(clue);
+  res.status(200).send({clue: clue});
 });
 
 router.post('/saveGame', async function (req, res, next) {
@@ -116,7 +93,7 @@ router.post('/saveGame', async function (req, res, next) {
     }
   }
   let g = await Game.findByPk(newGame.id, { include: { all: true, nested: true } })
-  res.status(200).send(JSON.stringify(g));
+  res.status(200).json({game: JSON.stringify(g)});
 });
 
 router.post('/resetGame', async function (req, res, next) {
@@ -124,11 +101,11 @@ router.post('/resetGame', async function (req, res, next) {
   console.log(data);
   let clues = await Clue.update(
     { revealed: false },
-  {
-    where: {
-      gameId: data.gameId,
+    {
+      where: {
+        gameId: data.gameId,
+      },
     },
-  },
   );
 
   let game = await Game.findByPk(data.gameId);
@@ -141,7 +118,7 @@ router.post('/resetGame', async function (req, res, next) {
   }
   game.players = players;
   await game.save();
-  res.status(200).send([JSON.stringify(game.players), JSON.stringify(clues)]);
+  res.status(200).json({data: [JSON.stringify(game.players), JSON.stringify(clues)]});
 });
 
 router.post('/deletegame', async function (req, res, next) {
@@ -154,14 +131,9 @@ router.post('/deletegame', async function (req, res, next) {
         id: data.gameId
       },
     }),
-    // await Category.deleteMany({ gameId: data.gameId }),
-    // await Clue.deleteMany({ gameId: data.gameId }),
   ];
 
-  res.status(200).send([JSON.stringify(responses)]);
+  res.status(200).json({data: [JSON.stringify(responses)]});
 });
 
-function formattedDate() {
-  return new Date().toISOString().slice(0, 19).replace('T', ' ');
-}
 module.exports = router;
