@@ -48,7 +48,6 @@ router.get('/play', async function (req, res, next) {
     game['valObj'].push(v);
   }
 
-  console.log(game);
   res.render('games/playGame', {
     game: game,
     gameString: JSON.stringify(game),
