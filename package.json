@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "seedProdDB": "node sqlSeedDB.js"
+    "seedProdDB": "node sqlSeedDB.js",
+    "seedBoBDB": "node sqlSeedBoBDB.js"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.33.0",
