@@ -26,6 +26,14 @@ hbs.registerHelper('times', function(n, block) {
   }
   return accum;
 });
+
+hbs.registerHelper('splitAnswer', function(str) {
+  if (str.split("@@").length > 1) {
+    return str.split("@@").join("<br/>");
+  }
+  return str;
+});
+
 hbs.registerPartials(__dirname + '/views/partials');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
