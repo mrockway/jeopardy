@@ -39,7 +39,7 @@ $(function() {
       contentType: "application/json; charset=utf-8",
       dataType: "json"
     }).done(function( data ) {
-      console.log(data)
+      console.log(`score data: ${JSON.stringify(data)}`)
       for (const el of data) {
         $(`#${el.name}_score`).text(`$${el.score.toLocaleString()}`)
       }
