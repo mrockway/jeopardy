@@ -431,7 +431,7 @@ async function seedDB() {
   let seedGames = [];
   for (var i = 0; i < 16; i++) {
     seedGames.push({
-      gameName: `4rd Grade - BoB Quiz #${gameNumber+= 1}`,
+      gameName: `3rd & 4th Grade - BoB Quiz #${gameNumber+= 1}`,
       players: ["Team1", "Team2", "Team3", "Team4", "Team5", "Team6"],
       categories: [
         {
